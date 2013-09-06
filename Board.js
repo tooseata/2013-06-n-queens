@@ -58,35 +58,133 @@
     // todo: fill in all these functions - they'll help you!
 
     hasRowConflictAt: function(rowIndex){
-      return false; // fixme
+      var row = this.get(rowIndex);
+      var result;
+      var counter = 0;
+      _.each(row, function(value){
+        if(value == 1){
+          counter++;
+        }
+        if(counter > 1){
+          result = true;
+        } else{
+          result = false;
+        }
+      });
+      return result;
     },
 
     hasAnyRowConflicts: function(){
-      return false; // fixme
+      var totalRows =_.range(this.get("n"));
+      return _.reduce(totalRows, function(memo, row){
+        memo = memo || this.hasRowConflictAt(row);
+        return memo;
+      },false,this);
+    },
+
+    columns: function(input){
+      var matrix = this.rows();
+      var result = _(matrix).map(function(row){
+        return row[input];
+      },this);
+      return result;
     },
 
     hasColConflictAt: function(colIndex){
-      return false; // fixme
+      var col = this.columns(colIndex);
+      var result;
+      var counter = 0;
+      _.each(col, function(value){
+        if(value == 1){
+          counter++;
+        }
+        if(counter > 1){
+          result = true;
+        } else{
+          result = false;
+        }
+      });
+      return result;
     },
 
     hasAnyColConflicts: function(){
-      return false; // fixme
+      var totalcols =_.range(this.get("n"));
+      return _.reduce(totalcols, function(memo, col){
+        memo = memo || this.hasColConflictAt(col);
+        return memo;
+      },false,this);
+    },
+
+    getMajorDiagonal: function(majorDiagonalColumnIndexAtFirstRow){
+      var matrix = this.rows();
+      var count = majorDiagonalColumnIndexAtFirstRow;
+      var resultDiagonal = [];
+       _.each(matrix, function(row){
+        resultDiagonal.push(row[count]);
+        count++;
+      });
+       return resultDiagonal;
     },
 
     hasMajorDiagonalConflictAt: function(majorDiagonalColumnIndexAtFirstRow){
-      return false; // fixme
+      var diagonal = this.getMajorDiagonal(majorDiagonalColumnIndexAtFirstRow);
+      var result;
+      var counter = 0;
+      _.each(diagonal, function(value){
+        if(value == 1){
+          counter++;
+        }
+        if(counter > 1){
+          result = true;
+        } else{
+          result = false;
+        }
+      });
+      return result;
     },
 
     hasAnyMajorDiagonalConflicts: function(){
-      return false; // fixme
+      var allDiagonals =_.range(this.get("n"));
+      return _.reduce(allDiagonals, function(memo, diagonal){
+        memo = memo || this.hasMajorDiagonalConflictAt(diagonal);
+        return memo;
+      },false,this);
+    },
+
+    getMinorDiagonal: function(minorDiagonalColumnIndexAtFirstRow){
+      var matrix = this.rows();
+      var count = minorDiagonalColumnIndexAtFirstRow;
+      var resultDiagonal = [];
+       _.each(matrix, function(row){
+        resultDiagonal.push(row[count]);
+        count--;
+      });
+       return resultDiagonal;
     },
 
     hasMinorDiagonalConflictAt: function(minorDiagonalColumnIndexAtFirstRow){
-      return false; // fixme
+      var diagonal = this.getMinorDiagonal(minorDiagonalColumnIndexAtFirstRow);
+      var result;
+      var counter = 0;
+      _.each(diagonal, function(value){
+        if(value == 1){
+          counter++;
+        }
+        if(counter > 1){
+          result = true;
+        } else{
+          result = false;
+        }
+      });
+      return result;
     },
 
     hasAnyMinorDiagonalConflicts: function(){
-      return false; // fixme
+      var allDiagonals =_.range(this.get("n"));
+      return _.reduce(allDiagonals, function(memo, diagonal){
+        memo = memo || this.hasMinorDiagonalConflictAt(diagonal);
+        return memo;
+      },false,this);
     }
 
   });
